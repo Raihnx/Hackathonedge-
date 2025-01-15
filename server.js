@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer'); // Import nodemailer
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,6 +17,15 @@ const pool = new Pool({
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Nodemailer Transporter Configuration
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // Use Gmail or your email service
+  auth: {
+    user: process.env.EMAIL_USER, // Your email address
+    pass: process.env.EMAIL_PASS, // App password or email password
+  },
+});
 
 // Password validation function
 function isValidPassword(password) {
@@ -44,7 +54,23 @@ app.post('/signup', async (req, res) => {
       'INSERT INTO users (fullname, email, username, password) VALUES ($1, $2, $3, $4)',
       [fullname, email, username, hashedPassword]
     );
-    res.redirect('/login');
+
+    // Send a confirmation email
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Registration Successful',
+      text: `Hi ${fullname},\n\nThank you for registering. Your account has been created successfully.\n\nBest regards,\nYour Team`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).json({ error: 'User registered, but email could not be sent.' });
+      }
+      console.log('Email sent:', info.response);
+      res.redirect('/login');
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Error registering user.' });
