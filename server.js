@@ -3,7 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer'); // Import nodemailer
+const nodemailer = require('nodemailer');
+const crypto = require('crypto'); // For generating OTPs
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,10 +21,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Nodemailer Transporter Configuration
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // Use Gmail or your email service
+  service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER, // Your email address
-    pass: process.env.EMAIL_PASS, // App password or email password
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
@@ -33,15 +34,66 @@ function isValidPassword(password) {
   return passwordPattern.test(password);
 }
 
+// In-memory OTP store (for simplicity)
+const otpStore = {};
+
+// Generate OTP
+function generateOTP() {
+  return crypto.randomInt(100000, 999999).toString();
+}
+
 // Routes
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 app.get('/signup', (req, res) => res.sendFile(__dirname + '/signup.html'));
 app.get('/login', (req, res) => res.sendFile(__dirname + '/login.html'));
 
-// Handle Signup
-app.post('/signup', async (req, res) => {
-  const { fullname, email, username, password } = req.body;
+// Send OTP
+app.post('/send-otp', async (req, res) => {
+  const { email, fullname } = req.body;
 
+  try {
+    // Generate and store OTP
+    const otp = generateOTP();
+    otpStore[email] = { otp, expiresAt: Date.now() + 10 * 60 * 1000 }; // OTP valid for 10 minutes
+
+    // Send OTP via email
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Your OTP for Registration',
+      text: `Hi ${fullname},\n\nYour OTP for registration is: ${otp}\n\nThis OTP will expire in 10 minutes.\n\nBest regards,\nYour Team`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending OTP:', error);
+        return res.status(500).json({ error: 'Failed to send OTP. Please try again.' });
+      }
+      console.log('OTP sent:', info.response);
+      res.json({ success: true, message: 'OTP sent successfully.' });
+    });
+  } catch (err) {
+    console.error('Error generating OTP:', err);
+    res.status(500).json({ error: 'An error occurred while generating OTP.' });
+  }
+});
+
+// Verify OTP and Register User
+app.post('/verify-otp', async (req, res) => {
+  const { fullname, email, username, password, otp } = req.body;
+
+  // Check if OTP is valid
+  if (!otpStore[email] || otpStore[email].otp !== otp) {
+    return res.status(400).json({ error: 'Invalid or expired OTP.' });
+  }
+
+  // Check if OTP is expired
+  if (Date.now() > otpStore[email].expiresAt) {
+    delete otpStore[email];
+    return res.status(400).json({ error: 'OTP has expired. Please request a new one.' });
+  }
+
+  // Validate password
   if (!isValidPassword(password)) {
     return res.status(400).json({
       error: 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.',
@@ -49,31 +101,35 @@ app.post('/signup', async (req, res) => {
   }
 
   try {
+    // Hash password and save user in database
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     await pool.query(
       'INSERT INTO users (fullname, email, username, password) VALUES ($1, $2, $3, $4)',
       [fullname, email, username, hashedPassword]
     );
 
-    // Send a confirmation email
+    // Remove OTP after successful registration
+    delete otpStore[email];
+
+    // Send "Registration Successful" email
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
       subject: 'Registration Successful',
-      text: `Hi ${fullname},\n\nThank you for registering. Your account has been created successfully.\n\nBest regards,\nYour Team`,
+      text: `Hi ${fullname},\n\nThank you for registering. Your account has been created successfully.\n\nYou can now log in to your account using your credentials.\n\nBest regards,\nYour Team`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error('Error sending email:', error);
-        return res.status(500).json({ error: 'User registered, but email could not be sent.' });
+        console.error('Error sending registration success email:', error);
+        return res.status(500).json({ error: 'Account created, but confirmation email could not be sent.' });
       }
-      console.log('Email sent:', info.response);
-      res.redirect('/login');
+      console.log('Registration success email sent:', info.response);
+      res.json({ success: true, message: 'Account created successfully and confirmation email sent.' });
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error registering user.' });
+    console.error('Error registering user:', err);
+    res.status(500).json({ error: 'An error occurred while registering the user.' });
   }
 });
 
