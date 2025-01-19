@@ -46,6 +46,7 @@ function generateOTP() {
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 app.get('/signup', (req, res) => res.sendFile(__dirname + '/signup.html'));
 app.get('/login', (req, res) => res.sendFile(__dirname + '/login.html'));
+app.get('/invoice', (req, res) => res.sendFile(__dirname + '/invoice.html'));
 
 // Send OTP
 app.post('/send-otp', async (req, res) => {
@@ -157,6 +158,33 @@ app.post('/login', async (req, res) => {
   } catch (err) {
     console.error('Error during login:', err);
     return res.status(500).json({ error: 'An error occurred while logging in. Please try again.' });
+  }
+});
+
+// New Route: Add Invoice with Items
+app.post('/add-invoice', async (req, res) => {
+  const { invoiceDate, invoiceNumber, customerName, customerAddress, customerEmail, taxPercentage, items } = req.body;
+
+  try {
+    // Insert main invoice entry into the invoices table
+    await pool.query(
+      'INSERT INTO invoices (invoice_date, invoice_number, customer_name, customer_address, customer_email, tax_percentage) VALUES ($1, $2, $3, $4, $5, $6)',
+      [invoiceDate, invoiceNumber, customerName, customerAddress, customerEmail, taxPercentage]
+    );
+
+    // Insert items into invoice_items table
+    for (const item of items) {
+      const total = item.quantity * item.unitPrice; // Calculate total for each item
+      await pool.query(
+        'INSERT INTO invoice_items (description, quantity, unit_price, total) VALUES ($1, $2, $3, $4)',
+        [item.description, item.quantity, item.unitPrice, total]
+      );
+    }
+
+    res.status(200).json({ success: true, message: 'Invoice and items added successfully.' });
+  } catch (err) {
+    console.error('Error adding invoice and items:', err);  // Log error details
+    res.status(500).json({ success: false, error: 'Failed to add invoice and items. Please try again.' });
   }
 });
 

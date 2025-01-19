@@ -86,50 +86,44 @@
     .totals-container h5 {
       font-weight: bold;
     }
-    header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-size: 1rem;
-            transition: color 0.3s;
-        }
-        
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
   </style>
 </head>
 <body>
-    <header>
-        <div class="logo">BManager</div>
-        <nav class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Service</a>
-            <a href="#">Portfolio</a>
-            <a href="#">Contact Us</a>
-        </nav>
-    </header>
+  <header>
+    <div class="logo">BManager</div>
+    <nav class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Service</a>
+      <a href="#">Portfolio</a>
+      <a href="#">Contact Us</a>
+    </nav>
+  </header>
   <div class="container mt-5">
 
     <!-- Company Information -->
@@ -169,6 +163,12 @@
             <textarea id="customerAddress" class="form-control" rows="2" placeholder="Enter customer address" required></textarea>
           </div>
         </div>
+      </div>
+
+      <!-- Customer Email -->
+      <div class="mb-4">
+        <label for="customerEmail" class="form-label">Customer Email</label>
+        <input type="email" id="customerEmail" class="form-control" placeholder="Enter customer email" required>
       </div>
 
       <!-- Tax Percentage -->
@@ -259,7 +259,7 @@
 
       addItemBtn.addEventListener('click', () => {
         const newRow = document.createElement('tr');
-        newRow.innerHTML = `
+        newRow.innerHTML = ` 
           <td>${itemsTable.rows.length + 1}</td>
           <td><input type="text" class="form-control item-desc" placeholder="Item description" required></td>
           <td><input type="number" class="form-control item-qty" value="1" min="1" required></td>
@@ -268,6 +268,7 @@
           <td class="text-center"><button type="button" class="btn btn-danger btn-sm remove-item">-</button></td>
         `;
         itemsTable.appendChild(newRow);
+        updateTotals();
       });
 
       itemsTable.addEventListener('click', (e) => {
@@ -277,9 +278,47 @@
         }
       });
 
-      document.getElementById('invoiceForm').addEventListener('submit', (e) => {
+      document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        alert('Invoice Generated Successfully!');
+
+        // Collect Invoice Data
+        const invoiceData = {
+          invoiceDate: document.getElementById('invoiceDate').value,
+          invoiceNumber: document.getElementById('invoiceNumber').value,
+          customerName: document.getElementById('customerName').value,
+          customerAddress: document.getElementById('customerAddress').value,
+          customerEmail: document.getElementById('customerEmail').value,
+          taxPercentage: parseFloat(document.getElementById('taxRate').value),
+          items: Array.from(document.querySelectorAll('#itemsTable tr')).map(row => ({
+            description: row.querySelector('.item-desc').value,
+            quantity: parseFloat(row.querySelector('.item-qty').value),
+            unitPrice: parseFloat(row.querySelector('.item-price').value),
+            total: parseFloat(row.querySelector('.item-total').textContent) || 0 // Include the total for each item
+          })).filter(item => item.description && item.quantity > 0 && item.unitPrice > 0)
+        };
+
+        // Add the overall invoice total to the data
+        invoiceData.subtotal = parseFloat(subtotalEl.textContent) || 0;
+        invoiceData.tax = parseFloat(taxEl.textContent) || 0;
+        invoiceData.total = parseFloat(totalEl.textContent) || 0;
+
+        try {
+          const response = await fetch('http://localhost:3000/add-invoice', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(invoiceData)
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            alert('Invoice submitted successfully!');
+          } else {
+            alert('Failed to submit invoice: ' + result.error);
+          }
+        } catch (err) {
+          console.error('Error submitting invoice:', err);
+          alert('An error occurred while submitting the invoice.');
+        }
       });
 
       taxRateEl.addEventListener('input', updateTotals);
