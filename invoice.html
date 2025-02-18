@@ -112,18 +112,130 @@
       font-size: 1rem;
       transition: color 0.3s;
     }
+    
+    .toggle-btn {
+            display: inline-block; /* Hidden by default */
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        /* Adjust main container margin */
+.container {
+    margin-left: 250px; /* Adjust based on sidebar width */
+    transition: margin-left 0.3s;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin-left: 0;
+    }
+}
+
+
+        /* Sidebar Styling (Toggling) */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            padding-top: 2rem;
+            position: fixed;
+            left: -250px; /* Initially hidden */
+            top: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease-in-out;
+        }
+
+        .sidebar.open {
+            left: 0; /* Sidebar becomes visible when toggled */
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #fff;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            transition: background 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar a:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar a:hover {
+            background: #373838;
+        }
+
+        /* Content Section */
+        .content {
+            margin-left: 0; /* Initially no space for sidebar */
+            padding: 2rem;
+            flex-grow: 1;
+            text-align: center;
+            width: 100%;
+            transition: margin-left 0.3s;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Sidebar */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .toggle-btn {
+                display: inline-block; /* Show toggle button on smaller screens */
+            }
+
+            .nav-links {
+                display: none; /* Hide nav links on mobile */
+            }
+        }
   </style>
 </head>
-<body>
-  <header>
-    <div class="logo">BManager</div>
-    <nav class="nav-links">
-      <a href="#">Home</a>
+<body><header>
+  <div class="logo">IntelLogixAI ♔</div>
+  <nav class="nav-links">
+      <a href="/home">Home</a>
       <a href="#">Service</a>
       <a href="#">Portfolio</a>
       <a href="#">Contact Us</a>
-    </nav>
-  </header>
+  </nav>
+  <!-- Toggle Button -->
+  <button class="toggle-btn" id="toggleButton">&#9776;</button>
+</header>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="logo">IntelLogixAI ♔</div>
+  <a href="/home">Home</a>
+  <a href="/invoice">New Invoice</a>
+  <a href="#">Contacts</a>
+  <a href="#">Logout</a>
+</nav>
   <div class="container mt-5">
 
     <!-- Company Information -->
@@ -232,6 +344,15 @@
   </div>
 
   <script>
+    const toggleButton = document.getElementById('toggleButton');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.querySelector('.content');
+
+        toggleButton.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    document.querySelector('.container').style.marginLeft = sidebar.classList.contains('open') ? '250px' : '0';
+});
+
     document.addEventListener('DOMContentLoaded', function () {
       const itemsTable = document.getElementById('itemsTable');
       const addItemBtn = document.getElementById('addItem');

@@ -47,6 +47,7 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 app.get('/signup', (req, res) => res.sendFile(__dirname + '/signup.html'));
 app.get('/login', (req, res) => res.sendFile(__dirname + '/login.html'));
 app.get('/invoice', (req, res) => res.sendFile(__dirname + '/invoice.html'));
+app.get('/home', (req, res) => res.sendFile(__dirname + '/home.html'));
 
 // Send OTP
 app.post('/send-otp', async (req, res) => {
