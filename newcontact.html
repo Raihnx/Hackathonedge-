@@ -3,9 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - IntelLogixAI</title>
+    <title>Contact Manager</title>
     <style>
-        /* General Reset */
+       
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+        }
+        .contact-list {
+            margin-top: 20px;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -60,11 +76,10 @@
             color: white;
             border: none;
             padding: 0.5rem 1rem;
-            font-size: 1.5rem;
+            font-size: 1rem;
             cursor: pointer;
             border-radius: 5px;
         }
-
         /* Sidebar Styling (Toggling) */
         .sidebar {
             width: 250px;
@@ -126,35 +141,6 @@
             margin-bottom: 2rem;
             color: white;
         }
-
-        .search-bar {
-            margin: 2rem auto;
-            display: flex;
-            justify-content: center;
-        }
-
-        .search-bar input {
-            width: 50%;
-            padding: 0.75rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .search-bar button {
-            padding: 0.75rem 1rem;
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-left: 0.5rem;
-        }
-
-        .search-bar button:hover {
-            background: #0056b3;
-        }
     </style>
 </head>
 <body>
@@ -168,7 +154,6 @@
         </nav>
         <button class="toggle-btn" id="toggleButton">&#9776;</button>
     </header>
-
     <nav class="sidebar" id="sidebar">
         <div class="logo">IntelLogixAI ♔</div>
         <a href="/home">Home</a>
@@ -176,13 +161,13 @@
         <a href="/newcontact">Contacts</a>
         <a href="#">Logout</a>
     </nav>
-
-    <div class="content">
-        <h1 >Welcome to IntelLogixAI</h1>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search...">
-            <button id="searchButton">Search</button>
-        </div>
+    <div class="container">
+        <h2>Add Contact</h2>
+        <input type="text" id="name" placeholder="Enter Name">
+        <input type="text" id="phone" placeholder="Enter Phone Number">
+        <button onclick="addContact()">Add Contact</button>
+        <h3>Contact List</h3>
+        <ul id="contactList" class="contact-list"></ul>
     </div>
 
     <script>
@@ -196,22 +181,21 @@
             sidebar.classList.toggle('open');
             content.style.marginLeft = sidebar.classList.contains('open') ? '250px' : '0';
         });
-
-        searchButton.addEventListener('click', () => {
-            let query = searchInput.value.toLowerCase().trim();
-            let pages = {
-                "home": "/home",
-                "service": "/service",
-                "portfolio": "/portfolio",
-                "contact us": "/contact",
-                "invoice": "/invoice"
-            };
-            if (pages[query]) {
-                window.location.href = pages[query];
+        function addContact() {
+            let name = document.getElementById("name").value;
+            let phone = document.getElementById("phone").value;
+            
+            if(name && phone) {
+                let li = document.createElement("li");
+                li.textContent = `${name} - ${phone}`;
+                document.getElementById("contactList").appendChild(li);
+                
+                document.getElementById("name").value = "";
+                document.getElementById("phone").value = "";
             } else {
-                alert("Page not found! Try searching for: Home, Service, Portfolio, Contact Us, or Invoice.");
+                alert("Please enter both name and phone number");
             }
-        });
+        }
     </script>
 </body>
 </html>

@@ -50,6 +50,7 @@ app.get('/invoice', (req, res) => res.sendFile(__dirname + '/invoice.html'));
 app.get('/home', (req, res) => res.sendFile(__dirname + '/home.html'));
 app.get('/services', (req, res) => res.sendFile(__dirname + '/services.html'));
 app.get('/contact', (req, res) => res.sendFile(__dirname + '/contact.html'));
+app.get('/newcontact', (req, res) => res.sendFile(__dirname + '/newcontact.html'));
 
 // Send OTP
 app.post('/send-otp', async (req, res) => {
