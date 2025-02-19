@@ -14,7 +14,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: url('/images/bg3.webp') no-repeat center center/cover;
+            height: 150vh;
+            background: url('/images/background.png') no-repeat center center/cover;
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -54,7 +55,7 @@
         }
 
         .toggle-btn {
-            display: inline-block; /* Hidden by default */
+            display: inline-block;
             background: #333;
             color: white;
             border: none;
@@ -71,14 +72,14 @@
             background: rgba(0, 0, 0, 0.9);
             padding-top: 2rem;
             position: fixed;
-            left: -250px; /* Initially hidden */
+            left: -250px;
             top: 0;
             border-right: 1px solid rgba(255, 255, 255, 0.2);
             transition: left 0.3s ease-in-out;
         }
 
         .sidebar.open {
-            left: 0; /* Sidebar becomes visible when toggled */
+            left: 0;
         }
 
         .sidebar .logo {
@@ -111,7 +112,7 @@
 
         /* Content Section */
         .content {
-            margin-left: 0; /* Initially no space for sidebar */
+            margin-left: 0;
             padding: 2rem;
             flex-grow: 1;
             text-align: center;
@@ -123,31 +124,40 @@
         .content h1 {
             font-size: 2.5rem;
             margin-bottom: 2rem;
+            color: white;
         }
 
-        /* Responsive Sidebar */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 200px;
-            }
+        .search-bar {
+            margin: 2rem auto;
+            display: flex;
+            justify-content: center;
+        }
 
-            .content {
-                margin-left: 0;
-            }
+        .search-bar input {
+            width: 50%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
 
-            .toggle-btn {
-                display: inline-block; /* Show toggle button on smaller screens */
-            }
+        .search-bar button {
+            padding: 0.75rem 1rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 0.5rem;
+        }
 
-            .nav-links {
-                display: none; /* Hide nav links on mobile */
-            }
+        .search-bar button:hover {
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
-
-    <!-- Header with Sidebar Toggle Button -->
     <header>
         <div class="logo">IntelLogixAI ♔</div>
         <nav class="nav-links">
@@ -156,11 +166,9 @@
             <a href="#">Portfolio</a>
             <a href="#">Contact Us</a>
         </nav>
-        <!-- Toggle Button -->
         <button class="toggle-btn" id="toggleButton">&#9776;</button>
     </header>
 
-    <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="logo">IntelLogixAI ♔</div>
         <a href="/home">Home</a>
@@ -169,22 +177,41 @@
         <a href="#">Logout</a>
     </nav>
 
-    <!-- Content Section -->
     <div class="content">
-        <h1>Welcome to IntelLogixAI</h1>
-        <!-- Your content goes here -->
+        <h1 >Welcome to IntelLogixAI</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button id="searchButton">Search</button>
+        </div>
     </div>
 
     <script>
         const toggleButton = document.getElementById('toggleButton');
         const sidebar = document.getElementById('sidebar');
         const content = document.querySelector('.content');
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
 
         toggleButton.addEventListener('click', () => {
             sidebar.classList.toggle('open');
             content.style.marginLeft = sidebar.classList.contains('open') ? '250px' : '0';
         });
-    </script>
 
+        searchButton.addEventListener('click', () => {
+            let query = searchInput.value.toLowerCase().trim();
+            let pages = {
+                "home": "/home",
+                "service": "/service",
+                "portfolio": "/portfolio",
+                "contact us": "/contact",
+                "invoice": "/invoice"
+            };
+            if (pages[query]) {
+                window.location.href = pages[query];
+            } else {
+                alert("Page not found! Try searching for: Home, Service, Portfolio, Contact Us, or Invoice.");
+            }
+        });
+    </script>
 </body>
 </html>
