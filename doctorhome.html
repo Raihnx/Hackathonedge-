@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Home - IntelLogixAI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 150vh;
+            background: url('/images/background1.jpeg') no-repeat center center/cover;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .toggle-btn {
+            display: inline-block;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            padding-top: 2rem;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            transition: left 0.3s ease-in-out;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            margin-left: 0;
+            transition: margin-left 0.3s;
+            color: #333;
+        }
+
+        .doctor-profile, .appointment-requests {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .toggle-btn {
+            display: inline-block;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Sidebar Styling (Toggling) */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            padding-top: 2rem;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease-in-out;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #fff;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            transition: background 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar a:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar a:hover {
+            background: #373838;
+        }
+        .doctor-profile {
+            width: 40%;
+            
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #333;
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            margin: 0.5rem 0;
+            display: block;
+            text-align: center;
+        }
+
+        .doctor-profile input {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .edit-button {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .edit-button:hover {
+            background: #0056b3;
+        }
+
+        .appointment-requests {
+            width: 55%;
+        }
+
+        .request {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        .request .actions button {
+            margin-left: 10px;
+            padding: 0.5rem 1rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .accept {
+            background: #000000;
+            color: white;
+        }
+
+        .reject {
+            background: #000000;
+            color: white;
+        }
+
+        .accept:hover {
+            background: #026312;
+        }
+
+        .reject:hover {
+            background: #6f0000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Medicare ♔</div>
+        <nav class="nav-links">
+            <a href="/home">Home</a>
+            <a href="/services">Service</a>
+            <a href="/doctorhome">Portfolio</a>
+            <a href="/contact">Contact Us</a>
+        </nav>
+        <button class="toggle-btn" id="toggleButton">&#9776;</button>
+    </header>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">Medicare ♔</div>
+        <a href="/home">Home</a>
+        <a href="/invoice">New Invoice</a>
+        <a href="/newcontact">Contacts</a>
+        <a href="#">Logout</a>
+    </nav>
+
+
+    <div class="content">
+        <div class="doctor-profile">
+            <h2>Doctor Profile</h2>
+            <img src="https://via.placeholder.com/120" id="profilePic" class="profile-picture" alig >
+            <input type="file" id="uploadPic" class="file-input">
+            <label>Name:</label>
+            <input type="text" id="doctorName" value="Enter Name" disabled>
+            <label>Age:</label>
+            <input type="number" id="doctorAge" value="Enter Age" disabled>
+            <label>Experience (Years):</label>
+            <input type="number" id="doctorExperience" value="Enter Experience" disabled>
+            <label>Specialization:</label>
+            <input type="text" id="doctorSpecialization" value="Enter Specialization" disabled>
+            <label>Current Hospitals:</label>
+            <input type="text" id="doctorHospitals" value="Enter Hospital" disabled>
+            <button id="editProfileButton" class="edit-button">Edit</button>
+        </div>
+
+        <div class="appointment-requests">
+            <h2>Incoming Appointment Requests</h2>
+            <div class="request">
+                <span>Jane Doe - March 3, 10:00 AM</span>
+                <div class="actions">
+                    <button class="accept">Accept</button>
+                    <button class="reject">Reject</button>
+                </div>
+            </div>
+            <div class="request">
+                <span>Mike Smith - March 4, 2:00 PM</span>
+                <div class="actions">
+                    <button class="accept">Accept</button>
+                    <button class="reject">Reject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggleButton = document.getElementById('toggleButton');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.querySelector('.content');
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            content.style.marginLeft = sidebar.classList.contains('open') ? '250px' : '0';
+        });
+        document.getElementById('uploadPic').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    document.getElementById('profilePic').src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        const editButton = document.getElementById('editProfileButton');
+        const doctorInputs = document.querySelectorAll('.doctor-profile input');
+        const editStatus = document.getElementById('editStatus');
+
+        editButton.addEventListener('click', () => {
+            if (editButton.innerText === "Edit") {
+                doctorInputs.forEach(input => input.removeAttribute('disabled'));
+                editButton.innerText = "Save";
+                editStatus.innerText = "Editing...";
+            } else {
+                doctorInputs.forEach(input => input.setAttribute('disabled', true));
+                editButton.innerText = "Edit";
+                editStatus.innerText = "Changes saved successfully!";
+                setTimeout(() => { editStatus.innerText = ""; }, 2000);
+            }
+        });
+        
+    </script>
+</body>
+</html>
