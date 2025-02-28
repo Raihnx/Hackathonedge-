@@ -3,450 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invoice Generation</title>
+  <title>Medical Appointment</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background-color: #e4e4e7;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    h1 {
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    .card {
-      border-radius: 12px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-body h5 {
-      font-size: 1.2rem;
-      color: #000000;
-      border-bottom: 2px solid #000000;
-      padding-bottom: 8px;
-    }
-
-    .form-label {
-      font-weight: bold;
-      color: #343a40;
-    }
-
-    .table thead th {
-      background-color: #342222;
-      color: rgb(255, 253, 253);
-      text-align: center;
-    }
-
-    .table tbody tr:nth-child(odd) {
-      background-color: #e9ecef;
-    }
-
-    .table tbody tr:nth-child(even) {
-      background-color: #f8f9fa;
-    }
-
-    .table tbody tr:hover {
-      background-color: #dee2e6;
-    }
-
-    .btn {
-      border-radius: 30px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-    }
-    
-    #addItem {
-      background-color: #010101;
-      border: #000000;
-      color: white;
-      margin-top: 10px;
-    }
-
-    #addItem:hover {
-      background-color: #218838;
-    }
-
-    .btn-danger {
-      background-color: #000000;
-      border: #000000;
-    }
-
-    .btn-danger:hover {
-      background-color: #c82333;
-    }
-
-    .totals-container p,
-    .totals-container h5 {
-      margin: 0;
-      color: #212529;
-    }
-
-    .totals-container h5 {
-      font-weight: bold;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #333;
-      font-size: 1rem;
-      transition: color 0.3s;
-    }
-    
-    .toggle-btn {
-            display: inline-block; /* Hidden by default */
-            background: #333;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        /* Adjust main container margin */
-.container {
-    margin-left: 250px; /* Adjust based on sidebar width */
-    transition: margin-left 0.3s;
-}
-
-@media (max-width: 768px) {
-    .container {
-        margin-left: 0;
-    }
-}
-
-
-        /* Sidebar Styling (Toggling) */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.9);
-            padding-top: 2rem;
-            position: fixed;
-            left: -250px; /* Initially hidden */
-            top: 0;
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-            transition: left 0.3s ease-in-out;
-        }
-
-        .sidebar.open {
-            left: 0; /* Sidebar becomes visible when toggled */
-        }
-
-        .sidebar .logo {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-            color: #fff;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            color: #fff;
-            font-size: 1rem;
-            transition: background 0.3s;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .sidebar a:last-child {
-            border-bottom: none;
-        }
-
-        .sidebar a:hover {
-            background: #373838;
-        }
-
-        /* Content Section */
-        .content {
-            margin-left: 0; /* Initially no space for sidebar */
-            padding: 2rem;
-            flex-grow: 1;
-            text-align: center;
-            width: 100%;
-            transition: margin-left 0.3s;
-        }
-
-        .content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Responsive Sidebar */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 200px;
-            }
-
-            .content {
-                margin-left: 0;
-            }
-
-            .toggle-btn {
-                display: inline-block; /* Show toggle button on smaller screens */
-            }
-
-            .nav-links {
-                display: none; /* Hide nav links on mobile */
-            }
-        }
+    body { background-color: #e4e4e7; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    h1 { font-weight: bold; letter-spacing: 1px; }
+    .card { border-radius: 12px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); }
+    .form-label { font-weight: bold; color: #343a40; }
+    .btn-primary { background-color: #010101; border: none; color: white; }
+    .btn-primary:hover { background-color: #218838; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+    .logo { font-size: 1.5rem; font-weight: bold; }
   </style>
 </head>
-<body><header>
-  <div class="logo">IntelLogixAI ♔</div>
-  <nav class="nav-links">
-      <a href="/home">Home</a>
-      <a href="/services">Service</a>
-      <a href="#">Portfolio</a>
-      <a href="/contact">Contact Us</a>
-  </nav>
-  <!-- Toggle Button -->
-  <button class="toggle-btn" id="toggleButton">&#9776;</button>
+<body>
+
+<header>
+  <div class="logo">MediCare ♔</div>
 </header>
 
-<!-- Sidebar -->
-<nav class="sidebar" id="sidebar">
-  <div class="logo">IntelLogixAI ♔</div>
-  <a href="/home">Home</a>
-  <a href="/invoice">New Invoice</a>
-  <a href="#">Contacts</a>
-  <a href="#">Logout</a>
-</nav>
-  <div class="container mt-5">
-
-    <!-- Company Information -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <h5>Company Information</h5>
-        <p><strong>IntelLogixAi Pvt. Ltd.</strong></p>
-        <p>Block A, 3rd Floor, Silicon Business Park, Outer Ring Road, Marathahalli, Bengaluru, Karnataka, 560103, India.</p>
-        <p><strong>Phone:</strong> +91-9876543210</p>
+<div class="container mt-5">
+  <form id="appointmentForm">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="appointmentDate" class="form-label">Appointment Date</label>
+        <input type="date" id="appointmentDate" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label for="appointmentTime" class="form-label">Appointment Time</label>
+        <input type="time" id="appointmentTime" class="form-control" required>
       </div>
     </div>
 
-    <!-- Invoice Form -->
-    <form id="invoiceForm">
-      <!-- Invoice Date and Number -->
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="invoiceDate" class="form-label">Invoice Date</label>
-          <input type="date" id="invoiceDate" class="form-control" required>
-        </div>
-        <div class="col-md-6">
-          <label for="invoiceNumber" class="form-label">Invoice Number</label>
-          <input type="text" id="invoiceNumber" class="form-control" placeholder="Enter invoice number" required>
-        </div>
+    <h5>Patient Information</h5>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="patientName" class="form-label">Name</label>
+        <input type="text" id="patientName" class="form-control" placeholder="Enter your name" required>
       </div>
-
-      <!-- Customer Information -->
-      <div class="mb-4">
-        <h5 style="color: #000000;">Customer Information</h5>
-        <div class="row">
-          <div class="col-md-6">
-            <label for="customerName" class="form-label">Customer Name</label>
-            <input type="text" id="customerName" class="form-control" placeholder="Enter customer name" required>
-          </div>
-          <div class="col-md-6">
-            <label for="customerAddress" class="form-label">Customer Address</label>
-            <textarea id="customerAddress" class="form-control" rows="2" placeholder="Enter customer address" required></textarea>
-          </div>
-        </div>
+      <div class="col-md-3">
+        <label for="patientAge" class="form-label">Age</label>
+        <input type="number" id="patientAge" class="form-control" required>
       </div>
-
-      <!-- Customer Email -->
-      <div class="mb-4">
-        <label for="customerEmail" class="form-label">Customer Email</label>
-        <input type="email" id="customerEmail" class="form-control" placeholder="Enter customer email" required>
+      <div class="col-md-3">
+        <label for="patientGender" class="form-label">Gender</label>
+        <select id="patientGender" class="form-control" required>
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
+    </div>
 
-      <!-- Tax Percentage -->
-      <div class="mb-4">
-        <label for="taxRate" class="form-label">Tax Percentage (%)</label>
-        <input type="number" id="taxRate" class="form-control" value="10" min="0" step="0.1" required>
-      </div>
+    <div class="mb-3">
+      <label for="patientEmail" class="form-label">Email</label>
+      <input type="email" id="patientEmail" class="form-control" placeholder="Enter your email" required>
+    </div>
 
-      <!-- Items Table -->
-      <h5>Invoice Items</h5>
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Description</th>
-              <th>Quantity</th>
-              <th>Unit Price</th>
-              <th>Total</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="itemsTable">
-            <tr>
-              <td>1</td>
-              <td><input type="text" class="form-control item-desc" placeholder="Item description" required></td>
-              <td><input type="number" class="form-control item-qty" value="1" min="1" required></td>
-              <td><input type="number" class="form-control item-price" value="0" step="0.01" required></td>
-              <td class="item-total text-center">0.00</td>
-              <td class="text-center"><button type="button" class="btn btn-danger btn-sm remove-item">-</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <button type="button" class="btn btn-success" id="addItem">+</button>
-      </div>
+    <div class="mb-3">
+      <label for="doctorSelect" class="form-label">Select Doctor</label>
+      <select id="doctorSelect" class="form-control" required>
+        <option value="">Choose a Doctor</option>
+        <option value="Dr. A">Dr. A (Cardiologist)</option>
+        <option value="Dr. B">Dr. B (Dermatologist)</option>
+        <option value="Dr. C">Dr. C (General Physician)</option>
+      </select>
+    </div>
 
-      <!-- Totals -->
-      <div class="row mt-4 totals-container">
-        <div class="col-md-6"></div>
-        <div class="col-md-6">
-          <div class="d-flex justify-content-between">
-            <p><strong>Subtotal:</strong></p>
-            <p id="subtotal">0.00</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <p><strong>Tax:</strong></p>
-            <p id="tax">0.00</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <h5><strong>Total:</strong></h5>
-            <h5 id="total">0.00</h5>
-          </div>
-        </div>
-      </div>
+    <div class="mb-3">
+      <label for="symptoms" class="form-label">Symptoms / Reason for Visit</label>
+      <textarea id="symptoms" class="form-control" rows="3" placeholder="Describe your symptoms" required></textarea>
+    </div>
 
-      <!-- Generate Invoice Button -->
-      <div class="text-center mt-4">
-        <button type="submit" style="background-color: #000000; color: #dee2e6; border-radius: 20%;">Generate Invoice</button>
-      </div>
-    </form>
-  </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Book Appointment</button>
+    </div>
+  </form>
+</div>
 
-  <script>
-    const toggleButton = document.getElementById('toggleButton');
-        const sidebar = document.getElementById('sidebar');
-        const content = document.querySelector('.content');
+<script>
+  document.getElementById('appointmentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const appointmentData = {
+      appointmentDate: document.getElementById('appointmentDate').value,
+      appointmentTime: document.getElementById('appointmentTime').value,
+      patientName: document.getElementById('patientName').value,
+      patientAge: parseInt(document.getElementById('patientAge').value, 10),
+      patientGender: document.getElementById('patientGender').value,
+      patientEmail: document.getElementById('patientEmail').value,
+      doctor: document.getElementById('doctorSelect').value,
+      symptoms: document.getElementById('symptoms').value
+    };
 
-        toggleButton.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
-    document.querySelector('.container').style.marginLeft = sidebar.classList.contains('open') ? '250px' : '0';
-});
-
-    document.addEventListener('DOMContentLoaded', function () {
-      const itemsTable = document.getElementById('itemsTable');
-      const addItemBtn = document.getElementById('addItem');
-      const subtotalEl = document.getElementById('subtotal');
-      const taxEl = document.getElementById('tax');
-      const totalEl = document.getElementById('total');
-      const taxRateEl = document.getElementById('taxRate');
-
-      function updateTotals() {
-        let subtotal = 0;
-        document.querySelectorAll('#itemsTable tr').forEach(row => {
-          const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-          const price = parseFloat(row.querySelector('.item-price').value) || 0;
-          const total = qty * price;
-          row.querySelector('.item-total').textContent = total.toFixed(2);
-          subtotal += total;
-        });
-        const taxRate = parseFloat(taxRateEl.value) / 100 || 0;
-        const tax = subtotal * taxRate;
-        const total = subtotal + tax;
-        subtotalEl.textContent = subtotal.toFixed(2);
-        taxEl.textContent = tax.toFixed(2);
-        totalEl.textContent = total.toFixed(2);
-      }
-
-      addItemBtn.addEventListener('click', () => {
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = ` 
-          <td>${itemsTable.rows.length + 1}</td>
-          <td><input type="text" class="form-control item-desc" placeholder="Item description" required></td>
-          <td><input type="number" class="form-control item-qty" value="1" min="1" required></td>
-          <td><input type="number" class="form-control item-price" value="0" step="0.01" required></td>
-          <td class="item-total text-center">0.00</td>
-          <td class="text-center"><button type="button" class="btn btn-danger btn-sm remove-item">-</button></td>
-        `;
-        itemsTable.appendChild(newRow);
-        updateTotals();
+    try {
+      const response = await fetch(`${window.location.origin}/book-appointment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(appointmentData)
       });
 
-      itemsTable.addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove-item')) {
-          e.target.closest('tr').remove();
-          updateTotals();
-        }
-      });
+      const result = await response.json();
+      alert(result.success ? 'Appointment booked successfully!' : 'Failed to book appointment: ' + result.error);
+      if (result.success) document.getElementById('appointmentForm').reset();
+    } catch (err) {
+      console.error('Error:', err);
+      alert('An error occurred while booking the appointment.');
+    }
+  });
+</script>
 
-      document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Collect Invoice Data
-        const invoiceData = {
-          invoiceDate: document.getElementById('invoiceDate').value,
-          invoiceNumber: document.getElementById('invoiceNumber').value,
-          customerName: document.getElementById('customerName').value,
-          customerAddress: document.getElementById('customerAddress').value,
-          customerEmail: document.getElementById('customerEmail').value,
-          taxPercentage: parseFloat(document.getElementById('taxRate').value),
-          items: Array.from(document.querySelectorAll('#itemsTable tr')).map(row => ({
-            description: row.querySelector('.item-desc').value,
-            quantity: parseFloat(row.querySelector('.item-qty').value),
-            unitPrice: parseFloat(row.querySelector('.item-price').value),
-            total: parseFloat(row.querySelector('.item-total').textContent) || 0 // Include the total for each item
-          })).filter(item => item.description && item.quantity > 0 && item.unitPrice > 0)
-        };
-
-        // Add the overall invoice total to the data
-        invoiceData.subtotal = parseFloat(subtotalEl.textContent) || 0;
-        invoiceData.tax = parseFloat(taxEl.textContent) || 0;
-        invoiceData.total = parseFloat(totalEl.textContent) || 0;
-
-        try {
-          const response = await fetch('http://localhost:3000/add-invoice', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(invoiceData)
-          });
-
-          const result = await response.json();
-          if (result.success) {
-            alert('Invoice submitted successfully!');
-          } else {
-            alert('Failed to submit invoice: ' + result.error);
-          }
-        } catch (err) {
-          console.error('Error submitting invoice:', err);
-          alert('An error occurred while submitting the invoice.');
-        }
-      });
-
-      taxRateEl.addEventListener('input', updateTotals);
-      itemsTable.addEventListener('input', updateTotals);
-      updateTotals();
-    });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

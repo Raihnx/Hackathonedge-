@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Scheduled Appointments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        button:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Your Scheduled Appointments</h2>
+        <ul id="appointmentsList"></ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const appointmentsList = document.getElementById("appointmentsList");
+            const userId = 1; // Replace with dynamic user ID
+
+            // Fetch scheduled appointments
+            async function fetchAppointments() {
+                try {
+                    const response = await fetch(`http://localhost:5000/appointments/${userId}`);
+                    const appointments = await response.json();
+
+                    appointmentsList.innerHTML = "";
+                    if (appointments.length === 0) {
+                        appointmentsList.innerHTML = "<p>No upcoming appointments.</p>";
+                        return;
+                    }
+
+                    appointments.forEach((appt) => {
+                        const listItem = document.createElement("li");
+                        listItem.innerHTML = `
+                            <strong>Doctor ID:</strong> ${appt.doctor_id} <br>
+                            <strong>Date:</strong> ${new Date(appt.appointment_time).toLocaleString()} <br>
+                            <button class="cancel-btn" data-id="${appt.id}">Cancel</button>
+                        `;
+                        appointmentsList.appendChild(listItem);
+                    });
+
+                    // Add event listeners for cancel buttons
+                    document.querySelectorAll(".cancel-btn").forEach((btn) => {
+                        btn.addEventListener("click", cancelAppointment);
+                    });
+                } catch (error) {
+                    console.error("Error fetching appointments:", error);
+                }
+            }
+
+            // Cancel an appointment
+            async function cancelAppointment(event) {
+                const appointmentId = event.target.getAttribute("data-id");
+
+                try {
+                    const response = await fetch(`http://localhost:5000/cancel-appointment/${appointmentId}`, {
+                        method: "DELETE",
+                    });
+
+                    if (response.ok) {
+                        alert("Appointment canceled successfully!");
+                        fetchAppointments(); // Refresh the list
+                    } else {
+                        alert("Failed to cancel appointment.");
+                    }
+                } catch (error) {
+                    console.error("Error canceling appointment:", error);
+                }
+            }
+
+            // Load appointments on page load
+            fetchAppointments();
+        });
+    </script>
+
+</body>
+</html>
