@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile & Schedule</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('/images/background1.jpeg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(252, 252, 252, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Profile Section */
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007BFF;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h2 {
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+
+        .profile-info p {
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Schedule Section */
+        .schedule {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .schedule h2 {
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background: #007BFF;
+            color: white;
+        }
+
+        td, th {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background: #f1f1f1;
+        }
+
+        /* Book Button */
+        .book-btn {
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .book-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .profile {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+            td, th {
+                font-size: 14px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Doctor's Profile</h1>
+        </header>
+        <section class="profile">
+            <img src="doctor.jpg" alt="Doctor Profile Picture" class="profile-pic">
+            <div class="profile-info">
+                <h2>Dr. John Doe</h2>
+                <p>Specialization: Cardiology</p>
+                <p>Experience: 10+ Years</p>
+                <p>Location: City Hospital, New York</p>
+            </div>
+        </section>
+        <section class="schedule">
+            <h2>Appointment Schedule</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Patient Name</th>
+                        <th>Book Slot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>March 5, 2025</td>
+                        <td>10:00 AM - 10:30 AM</td>
+                        <td>Alice Johnson</td>
+                        <td><button class="book-btn" onclick="bookSlot('March 5, 2025', '10:00 AM - 10:30 AM')">Book</button></td>
+                    </tr>
+                    <tr>
+                        <td>March 5, 2025</td>
+                        <td>11:00 AM - 11:30 AM</td>
+                        <td>Mark Smith</td>
+                        <td><button class="book-btn" onclick="bookSlot('March 5, 2025', '11:00 AM - 11:30 AM')">Book</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        function bookSlot(date, time) {
+            alert(`Slot booked for ${date} at ${time}`);
+            // In the future, this can send data to the backend for actual booking
+        }
+    </script>
+</body>
+</html>
