@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicare</title>
+    <title>Doctor Profile & Schedule</title>
     <style>
-        /* General Reset */
+        /* General Styles */
         * {
             margin: 0;
             padding: 0;
@@ -13,162 +13,185 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            background: url('/images/background1.jpeg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* Header Styling */
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(252, 252, 252, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
+        h1, h2 {
+            text-align: center;
             color: #333;
-            font-size: 1rem;
-            transition: color 0.3s;
         }
 
-        .nav-links a:hover {
-            color: #007bff;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            height: 100vh;
-            background: url('/images/background.jpg') no-repeat center center/cover;
+        /* Profile Section */
+        .profile {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-        }
-
-        .hero-text {
-            color: #0e0d0d;
-            max-width: 50%;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-            font-style: italic;
-        }
-
-        .hero-text h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero-text p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .hero-buttons a {
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .learn-more {
-            background: transparent;
-            color: #fff;
-            border: 2px solid #fff;
-        }
-
-        .learn-more:hover {
+            gap: 20px;
+            padding: 20px;
             background: #fff;
-            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
-        .sign-in {
-            background: #007bff;
-            color: #fff;
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007BFF;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h2 {
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+
+        .profile-info p {
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Schedule Section */
+        .schedule {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .schedule h2 {
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background: #007BFF;
+            color: white;
+        }
+
+        td, th {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background: #f1f1f1;
+        }
+
+        /* Book Button */
+        .book-btn {
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
             border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .sign-in:hover {
-            background: #0056b3;
+        .book-btn:hover {
+            background-color: #218838;
         }
 
-        /* Footer Elements */
-        .hero-footer {
-            position: absolute;
-            bottom: 2rem;
-            left: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .profile {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+            td, th {
+                font-size: 14px;
+            }
         }
-
-        .social-icons a {
-            color: #fff;
-            font-size: 1.2rem;
-            transition: color 0.3s;
-        }
-
-        .social-icons a:hover {
-            color: #007bff;
-        }
-
-        
-
-
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="logo">Medicare ♔</div>
-        <nav class="nav-links">
-            <a href="#">Home</a>
-            <a href="/services">Service</a>
-            <a href="#">Portfolio</a>
-            <a href="/contact">Contact Us</a>
-        </nav>
-    </header>
-
-
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="hero-text">
-            <h1>We care for you</h1>
-            <h3>smart healthcare platform that enables patients to book appointments seamlessly, track doctors in real-time, and send emergency SOS alerts when needed.</h1>
-            <p>Reclaim control of your accounts with our intuitive, easy-to-use platform. Simplify your life today.</p>
-            <div class="hero-buttons">
-                <a href="#" class="learn-more">Learn More</a>
-                <a href="/signup" class="sign-in">Sign Up</a>
+    <div class="container">
+        <header>
+            <h1>Doctor's Profile</h1>
+        </header>
+        <section class="profile">
+            <img src="doctor.jpg" alt="Doctor Profile Picture" class="profile-pic">
+            <div class="profile-info">
+                <h2>Dr. John Doe</h2>
+                <p>Specialization: Cardiology</p>
+                <p>Experience: 10+ Years</p>
+                <p>Location: City Hospital, New York</p>
             </div>
-            <p>Explore our solutions tailored for your needs.</p>
-        </div>
-        <div class="hero-footer">
-            <span>www.BManager.com</span>
-            <div class="social-icons">
-                <a href="#"><img src="fb.png" alt="Facebook" width = 40px height = 40px></a>
-                <a href="#"><img src="twitter.png" alt="Twitter" width = 40px height = 40px></a>
-                <a href="#"><img src="insta.png" alt="LinkedIn" width = 40px height = 40px></a>
-            </div>
-        </div>
+        </section>
+        <section class="schedule">
+            <h2>Appointment Schedule</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Patient Name</th>
+                        <th>Book Slot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>March 5, 2025</td>
+                        <td>10:00 AM - 10:30 AM</td>
+                        <td>Alice Johnson</td>
+                        <td><button class="book-btn" onclick="bookSlot('March 5, 2025', '10:00 AM - 10:30 AM')">Book</button></td>
+                    </tr>
+                    <tr>
+                        <td>March 5, 2025</td>
+                        <td>11:00 AM - 11:30 AM</td>
+                        <td>Mark Smith</td>
+                        <td><button class="book-btn" onclick="bookSlot('March 5, 2025', '11:00 AM - 11:30 AM')">Book</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
     </div>
+
+    <script>
+        function bookSlot(date, time) {
+            alert(`Slot booked for ${date} at ${time}`);
+            // In the future, this can send data to the backend for actual booking
+        }
+    </script>
 </body>
 </html>
